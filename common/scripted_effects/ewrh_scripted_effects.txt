@@ -236,6 +236,8 @@ ewrh_create_sub_empires_effect = {
 				}
 			}
 			resolve_title_and_vassal_change = scope:ewrh_west_change
+			# Mark immediately — on_title_gain may fire asynchronously.
+			scope:ewrh_wre_recipient = { set_variable = ewrh_is_sub_roman_emperor }
 		}
 	}
 
@@ -321,6 +323,8 @@ ewrh_create_sub_empires_effect = {
 				}
 			}
 			resolve_title_and_vassal_change = scope:ewrh_east_change
+			# Mark immediately — on_title_gain may fire asynchronously.
+			scope:ewrh_byz_recipient = { set_variable = ewrh_is_sub_roman_emperor }
 		}
 	}
 

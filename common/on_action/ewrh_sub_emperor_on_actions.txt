@@ -1,0 +1,106 @@
+# EWRH on_actions for sub-empire title tracking.
+#
+# on_title_gain / on_title_lost are ADDITIVE (all definitions across all files
+# fire), so this does not replace the base game handler.
+#
+# Scopes:
+#   root         = new/former title holder
+#   scope:title  = the title that was gained/lost
+
+on_title_gain = {
+	effect = {
+		if = {
+			limit = {
+				scope:title = {
+					OR = {
+						this = title:e_western_roman_empire
+						this = title:e_byzantium
+					}
+				}
+			}
+			# Mark this character as a sub-roman emperor so council/court
+			# position triggers can block them reliably.
+			root = { set_variable = ewrh_is_sub_roman_emperor }
+
+			# Immediately fire from any active council position.
+			if = {
+				limit = {
+					root = {
+						liege = { exists = this }
+					}
+				}
+				root.liege = { fire_councillor = root }
+			}
+
+			# Immediately revoke any active court positions.
+			# revoke_court_position must be called on the employer's scope.
+			if = {
+				limit = { root = { has_court_position = royal_architect_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = royal_architect_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = court_jester_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = court_jester_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = seneschal_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = seneschal_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = bodyguard_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = bodyguard_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = lady_in_waiting_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = lady_in_waiting_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = master_of_hunt_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = master_of_hunt_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = court_tutor_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = court_tutor_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = court_physician_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = court_physician_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = court_poet_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = court_poet_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = court_musician_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = court_musician_court_position } }
+			}
+			if = {
+				limit = { root = { has_court_position = champion_court_position } }
+				root.employer = { revoke_court_position = { recipient = root court_position = champion_court_position } }
+			}
+		}
+	}
+}
+
+on_title_lost = {
+	effect = {
+		if = {
+			limit = {
+				scope:title = {
+					OR = {
+						this = title:e_western_roman_empire
+						this = title:e_byzantium
+					}
+				}
+				# Only clear if they no longer hold EITHER sub-empire title.
+				root = {
+					NOR = {
+						any_held_title = { this = title:e_western_roman_empire }
+						any_held_title = { this = title:e_byzantium }
+					}
+				}
+			}
+			root = { remove_variable = ewrh_is_sub_roman_emperor }
+		}
+	}
+}

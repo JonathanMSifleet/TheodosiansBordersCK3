@@ -1,0 +1,46 @@
+# Override global council and court position eligibility triggers to prevent
+# Roman sub-empire holders (e_western_roman_empire, e_byzantium) from being
+# appointed to any council or court position.
+# These files load after the base game definitions (zz_ sorts last), so these
+# definitions win.
+
+# --- Shared trigger ---
+# Checks both a persistent variable (set via on_title_gain, reliable at all times)
+# AND any_held_title (belt-and-suspenders, in case the variable hasn't been set yet).
+ewrh_is_sub_roman_emperor_trigger = {
+	OR = {
+		has_variable = ewrh_is_sub_roman_emperor
+		any_held_title = { this = title:e_western_roman_empire }
+		any_held_title = { this = title:e_byzantium }
+	}
+}
+
+# --- Council positions ---
+# Override of base game can_be_councillor_basics_trigger (00_councillor_triggers.txt).
+# Adds: sub-empire holders cannot sit on any council.
+can_be_councillor_basics_trigger = {
+	is_available_quick = {
+		adult = yes
+		incapable = no
+		imprisoned = no
+	}
+	is_at_war_with_liege = no
+	trigger_if = {
+		limit = { has_variable = block_hire_councillor }
+		NOT = { var:block_hire_councillor = liege }
+	}
+	NOT = { ewrh_is_sub_roman_emperor_trigger = yes }
+}
+
+# --- Court positions ---
+# Override of base game base_court_position_validity_trigger (00_court_position_triggers.txt).
+# Adds: sub-empire holders cannot hold any court position.
+base_court_position_validity_trigger = {
+	is_imprisoned = no
+	NOT = { is_at_war_with = $EMPLOYER$ }
+	custom_tooltip = {
+		text = is_not_a_ceremonial_liege_trigger
+		tgp_is_ceremonial_liege_trigger = no
+	}
+	NOT = { ewrh_is_sub_roman_emperor_trigger = yes }
+}
