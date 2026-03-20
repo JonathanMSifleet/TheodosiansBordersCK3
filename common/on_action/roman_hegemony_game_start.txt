@@ -11,9 +11,64 @@
 			title:e_western_roman_empire = { set_de_jure_liege_title = title:h_roman_empire }
 			title:e_byzantium = { set_de_jure_liege_title = title:h_roman_empire }
 
-			title:k_romagna = { set_de_jure_liege_title = title:e_western_roman_empire }	# Ravenna
-			title:k_italy = { set_de_jure_liege_title = title:e_western_roman_empire }		# Italia
-			title:k_sicily = { set_de_jure_liege_title = title:e_western_roman_empire }	# Sicily
+			# Western (Pars Occidentalis)
+			title:k_italy = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_romagna = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_naples = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_sardinia = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_sicily = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_france = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_aquitaine = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_burgundy = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_brittany = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_castille = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_leon = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_aragon = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_navarra = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_spanish_galicia = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_asturias = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_andalusia = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_badajoz = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_valencia = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_england = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_wales = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_cornwall = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_africa = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_maghreb = { set_de_jure_liege_title = title:e_western_roman_empire }
+			title:k_croatia = { set_de_jure_liege_title = title:e_western_roman_empire }
+
+			# Eastern (Pars Orientalis)
+			title:k_epirus = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_serbia = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_bosnia = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_thessalonika = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_hellas = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_krete = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_bulgaria = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_nikaea = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_pontus = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_trebizond = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_rum = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_anatolia = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_saruhan = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_tekke = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_mentese = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_karaman = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_germiyan = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_eretnid = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_candar = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_aydin = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_ottoman = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_armenia = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_georgia = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_armenian_principality = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_old_armenia = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_syria = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_jerusalem = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_cyprus = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_jazira = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_mesopotamia = { set_de_jure_liege_title = title:e_byzantium }
+			title:k_egypt = { set_de_jure_liege_title = title:e_byzantium }
 		}
 	}
 }

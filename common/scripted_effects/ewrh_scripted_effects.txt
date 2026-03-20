@@ -83,7 +83,13 @@ create_roman_empire_scripted_effect = {
 	hidden_effect = { set_primary_title_to = title:h_roman_empire }
 	every_held_title = { #Should destroy all other Empires owned at the time.
 		title_tier = empire
-
+		# EWRH: preserve these so their kingdom vassals aren't scattered on restoration
+		limit = {
+			NOR = {
+				this = title:e_byzantium
+				this = title:e_western_roman_empire
+			}
+		}
 		root = { destroy_title = prev }
 	}
 	
@@ -153,40 +159,114 @@ create_roman_empire_scripted_effect = {
 }
 
 ewrh_create_sub_empires_effect = {
-	# --- Grant e_western_roman_empire ---
-	create_title_and_vassal_change = {
-		type = created
-		save_scope_as = ewrh_west_change
-		add_claim_on_loss = no
-	}
-	title:e_western_roman_empire = {
-		change_title_holder = {
-			holder = root
-			change = scope:ewrh_west_change
+	# --- Grant e_western_roman_empire (only if not already held) ---
+	if = {
+		limit = { NOT = { exists = title:e_western_roman_empire.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = ewrh_west_change
+			add_claim_on_loss = no
 		}
-	}
-	resolve_title_and_vassal_change = scope:ewrh_west_change
-
-	# --- Grant e_byzantium ---
-	create_title_and_vassal_change = {
-		type = created
-		save_scope_as = ewrh_east_change
-		add_claim_on_loss = no
-	}
-	title:e_byzantium = {
-		change_title_holder = {
-			holder = root
-			change = scope:ewrh_east_change
+		title:e_western_roman_empire = {
+			change_title_holder = {
+				holder = root
+				change = scope:ewrh_west_change
+			}
 		}
+		resolve_title_and_vassal_change = scope:ewrh_west_change
 	}
-	resolve_title_and_vassal_change = scope:ewrh_east_change
 
-	# --- De jure hegemony structure ---
+	# --- Grant e_byzantium only if it has no holder ---
+	# If the restorer was a Byzantine emperor, e_byzantium was preserved by the
+	# destroy-loop exclusion above and still has its kingdom vassals intact.
+	if = {
+		limit = { NOT = { exists = title:e_byzantium.holder } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = ewrh_east_change
+			add_claim_on_loss = no
+		}
+		title:e_byzantium = {
+			change_title_holder = {
+				holder = root
+				change = scope:ewrh_east_change
+			}
+		}
+		resolve_title_and_vassal_change = scope:ewrh_east_change
+	}
+
+	# --- De jure hegemony/empire structure ---
 	title:e_western_roman_empire = { set_de_jure_liege_title = title:h_roman_empire }
 	title:e_byzantium = { set_de_jure_liege_title = title:h_roman_empire }
 
-	# --- De jure kingdoms of the Western Roman Empire ---
-	title:k_romagna = { set_de_jure_liege_title = title:e_western_roman_empire }	# Ravenna
-	title:k_italy = { set_de_jure_liege_title = title:e_western_roman_empire }		# Italia
-	title:k_sicily = { set_de_jure_liege_title = title:e_western_roman_empire }		# Sicily
+	# --- De jure kingdoms of the Western Roman Empire (Pars Occidentalis / Diocletian) ---
+	# Italia
+	title:k_italy = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_romagna = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_naples = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_sardinia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_sicily = { set_de_jure_liege_title = title:e_western_roman_empire }
+	# Gallia
+	title:k_france = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_aquitaine = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_burgundy = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_brittany = { set_de_jure_liege_title = title:e_western_roman_empire }
+	# Hispania
+	title:k_castille = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_leon = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_aragon = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_navarra = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_spanish_galicia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_asturias = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_andalusia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_badajoz = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_valencia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	# Britannia
+	title:k_england = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_wales = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_cornwall = { set_de_jure_liege_title = title:e_western_roman_empire }
+	# Africa Proconsularis and Mauretania (Western prefecture under Diocletian)
+	title:k_africa = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_maghreb = { set_de_jure_liege_title = title:e_western_roman_empire }
+	# Pannonia / Illyricum Occidentale
+	title:k_croatia = { set_de_jure_liege_title = title:e_western_roman_empire }
+
+	# --- De jure kingdoms of the Eastern Roman Empire (Pars Orientalis / Diocletian) ---
+	# Eastern Illyricum
+	title:k_epirus = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_serbia = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_bosnia = { set_de_jure_liege_title = title:e_byzantium }
+	# Macedonia and Thracia
+	title:k_thessalonika = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_hellas = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_krete = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_bulgaria = { set_de_jure_liege_title = title:e_byzantium }
+	# Anatolia
+	title:k_nikaea = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_pontus = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_trebizond = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_rum = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_anatolia = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_saruhan = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_tekke = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_mentese = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_karaman = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_germiyan = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_eretnid = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_candar = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_aydin = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_ottoman = { set_de_jure_liege_title = title:e_byzantium }
+	# Caucasus (Roman client kingdoms / contested)
+	title:k_armenia = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_georgia = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_armenian_principality = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_old_armenia = { set_de_jure_liege_title = title:e_byzantium }
+	# Oriens (Levant, Syria, Cyprus)
+	title:k_syria = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_jerusalem = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_cyprus = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_jazira = { set_de_jure_liege_title = title:e_byzantium }
+	title:k_mesopotamia = { set_de_jure_liege_title = title:e_byzantium }
+	# Aegyptus
+	title:k_egypt = { set_de_jure_liege_title = title:e_byzantium }
 }
