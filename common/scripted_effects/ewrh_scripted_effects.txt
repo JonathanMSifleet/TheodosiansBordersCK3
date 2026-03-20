@@ -1,4 +1,13 @@
-﻿# Overrides base game create_roman_empire_scripted_effect.
+﻿# No-op override of base game split_byzantine_empire_effect.
+# The base game calls this to promote e_illyria/e_macedonia/e_anatolia/etc. as
+# de jure sub-empires of h_roman_empire. We suppress it so only e_western_roman_empire
+# and e_byzantium appear under the hegemony.
+split_byzantine_empire_effect = {
+	# Intentionally empty — ewrh_create_sub_empires_effect sets all de jure explicitly.
+	hidden_effect = { }
+}
+
+# Overrides base game create_roman_empire_scripted_effect.
 # Added ewrh_create_sub_empires_effect at the end - covers both EP3 (Roads to Power)
 # and non-EP3 restoration paths, plus any other caller of this effect.
 create_roman_empire_scripted_effect = {
@@ -22,29 +31,6 @@ create_roman_empire_scripted_effect = {
 		limit = { capital_county = { this = title:c_byzantion } }
 		title:h_roman_empire = {
 			set_capital_county = title:c_byzantion
-		}
-	}
-
-	hidden_effect = {
-		every_held_title = { #Should shift all dejure of all Empires owned at the time.
-			title_tier = empire
-
-			set_de_jure_liege_title = title:h_roman_empire
-		}
-		every_empire = {
-			limit = {
-				NOT = { exists = hegemony }
-				any_de_jure_county = {
-					percent >= 0.6
-					holder = {
-						OR = {
-							this = root
-							any_liege_or_above = { this = root }
-						}
-					}
-				}
-			}
-			set_de_jure_liege_title = title:h_roman_empire
 		}
 	}
 	split_byzantine_empire_effect = yes
@@ -82,9 +68,9 @@ create_roman_empire_scripted_effect = {
 	}
 	hidden_effect = { set_primary_title_to = title:h_roman_empire }
 	every_held_title = { #Should destroy all other Empires owned at the time.
-		title_tier = empire
-		# EWRH: preserve these so their kingdom vassals aren't scattered on restoration
 		limit = {
+			tier = tier_empire
+			# EWRH: preserve these so their kingdom vassals aren't scattered on restoration
 			NOR = {
 				this = title:e_byzantium
 				this = title:e_western_roman_empire
@@ -159,6 +145,17 @@ create_roman_empire_scripted_effect = {
 }
 
 ewrh_create_sub_empires_effect = {
+	# --- Set de jure structure FIRST (before title creation, so CK3 sees the
+	#     correct structure when it processes the change_title_holder vassal change) ---
+	title:e_western_roman_empire = { set_de_jure_liege_title = title:h_roman_empire }
+	title:e_byzantium = { set_de_jure_liege_title = title:h_roman_empire }
+	title:k_italy = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_romagna = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_naples = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_sardinia = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_sicily = { set_de_jure_liege_title = title:e_western_roman_empire }
+	title:k_croatia = { set_de_jure_liege_title = title:e_western_roman_empire }
+
 	# --- Grant e_western_roman_empire (only if not already held) ---
 	if = {
 		limit = { NOT = { exists = title:e_western_roman_empire.holder } }
@@ -195,18 +192,24 @@ ewrh_create_sub_empires_effect = {
 		resolve_title_and_vassal_change = scope:ewrh_east_change
 	}
 
-	# --- De jure hegemony/empire structure ---
-	title:e_western_roman_empire = { set_de_jure_liege_title = title:h_roman_empire }
-	title:e_byzantium = { set_de_jure_liege_title = title:h_roman_empire }
-
-	# --- De jure kingdoms of the Western Roman Empire (core Italy + Croatia only) ---
-	title:k_italy = { set_de_jure_liege_title = title:e_western_roman_empire }
-	title:k_romagna = { set_de_jure_liege_title = title:e_western_roman_empire }
-	title:k_naples = { set_de_jure_liege_title = title:e_western_roman_empire }
-	title:k_sardinia = { set_de_jure_liege_title = title:e_western_roman_empire }
-	title:k_sicily = { set_de_jure_liege_title = title:e_western_roman_empire }
-	title:k_croatia = { set_de_jure_liege_title = title:e_western_roman_empire }
-	# e_byzantium needs no de jure assignments here — its kingdom vassals are
-	# preserved intact because the destroy loop excludes it (see
-	# create_roman_empire_scripted_effect override above).
+	# --- Clean up kingdoms auto-assigned to WRE by CK3's vassal change mechanism.
+	#     When WRE is "created", CK3 may absorb orphaned kingdoms (whose parent empires
+	#     were destroyed by the destroy loop) into WRE. This loop moves them to
+	#     h_roman_empire instead, keeping WRE limited to the 6 core Italian/Croatian titles. ---
+	title:e_western_roman_empire = {
+		every_in_de_jure_hierarchy = {
+			limit = {
+				tier = tier_kingdom
+				NOR = {
+					this = title:k_italy
+					this = title:k_romagna
+					this = title:k_naples
+					this = title:k_sardinia
+					this = title:k_sicily
+					this = title:k_croatia
+				}
+			}
+			set_de_jure_liege_title = title:h_roman_empire
+		}
+	}
 }
