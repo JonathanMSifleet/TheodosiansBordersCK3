@@ -1,0 +1,24 @@
+﻿# Roman Empire Hegemony - Encompasses both Western and Eastern Roman territories
+# De Jure children: e_western_roman_empire, e_byzantium
+
+h_roman_empire = {
+	color = { 167 10 0 }
+
+	capital = c_roma # Rome
+
+	definite_form = yes
+	can_be_named_after_dynasty = no
+
+	can_create = {
+		rule_title_creation_imperial_power_projection_title_creation_trigger = yes
+	}
+}
+
+# Western Roman Empire - De Jure child of h_roman_empire hegemony
+e_western_roman_empire = {
+	color = { 180 20 20 }
+
+	capital = c_roma # Rome
+	definite_form = yes
+
+}

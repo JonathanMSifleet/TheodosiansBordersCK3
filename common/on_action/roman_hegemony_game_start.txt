@@ -1,0 +1,19 @@
+﻿on_game_start_after_lobby = {
+	effect = {
+		# If h_roman_empire already exists at game start (e.g. a bookmark where it was restored),
+		# run the full setup. Otherwise just set de jure structure for the sub-empires.
+		if = {
+			limit = { exists = title:h_roman_empire.holder }
+			title:h_roman_empire.holder = { ewrh_create_sub_empires_effect = yes }
+		}
+		else = {
+			# Set de jure hegemony/empire structure without needing a holder
+			title:e_western_roman_empire = { set_de_jure_liege_title = title:h_roman_empire }
+			title:e_byzantium = { set_de_jure_liege_title = title:h_roman_empire }
+
+			title:k_romagna = { set_de_jure_liege_title = title:e_western_roman_empire }	# Ravenna
+			title:k_italy = { set_de_jure_liege_title = title:e_western_roman_empire }		# Italia
+			title:k_sicily = { set_de_jure_liege_title = title:e_western_roman_empire }	# Sicily
+		}
+	}
+}

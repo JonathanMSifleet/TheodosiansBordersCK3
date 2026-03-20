@@ -1,0 +1,15 @@
+﻿namespace = ewrh
+
+# Hidden event, fires 0 days after h_roman_empire is gained.
+# The event queue delay ensures it runs AFTER create_roman_empire_scripted_effect
+# finishes destroying all other empire titles, so our sub-empires survive.
+ewrh.1 = {
+	type = character_event
+	hidden = yes
+
+	immediate = {
+		ewrh_create_sub_empires_effect = yes
+	}
+
+	option = { name = ewrh.1.a }
+}
