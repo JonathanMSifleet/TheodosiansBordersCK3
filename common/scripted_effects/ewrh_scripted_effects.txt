@@ -157,17 +157,70 @@ ewrh_create_sub_empires_effect = {
 	title:k_croatia = { set_de_jure_liege_title = title:e_western_roman_empire }
 
 	# --- Grant e_western_roman_empire ---
-	# type = granted is the correct CK3 pattern for a liege giving a title to a vassal.
-	# No king-tier limit — the succession score's hard_disable handles disqualifiers,
-	# and a strict tier limit may yield zero candidates if the restorer only has duchy vassals.
+	# Fallback chain: relax filters progressively until a candidate is found.
 	if = {
 		limit = { NOT = { exists = title:e_western_roman_empire.holder } }
-		random_vassal = {
-			weight = {
-				base = 1
-				add = diarchy_regent_succession_score_value
+		# Tier 1: opinion >= 70 + same religion + Greek/Byzantine culture
+		ordered_vassal = {
+			limit = {
+				opinion = { target = root value >= 70 }
+				faith = { religion = root.faith.religion }
+				OR = {
+					culture = culture:greek
+					culture = { has_cultural_pillar = heritage_byzantine }
+				}
 			}
+			order_by = diarchy_regent_succession_score_value
+			max = 1
 			save_scope_as = ewrh_wre_recipient
+		}
+		# Tier 2: relax opinion to >= 40
+		if = {
+			limit = { NOT = { exists = scope:ewrh_wre_recipient } }
+			ordered_vassal = {
+				limit = {
+					opinion = { target = root value >= 40 }
+					faith = { religion = root.faith.religion }
+					OR = {
+						culture = culture:greek
+						culture = { has_cultural_pillar = heritage_byzantine }
+					}
+				}
+				order_by = diarchy_regent_succession_score_value
+				max = 1
+				save_scope_as = ewrh_wre_recipient
+			}
+		}
+		# Tier 3: drop opinion filter, keep religion + culture
+		if = {
+			limit = { NOT = { exists = scope:ewrh_wre_recipient } }
+			ordered_vassal = {
+				limit = {
+					faith = { religion = root.faith.religion }
+					OR = {
+						culture = culture:greek
+						culture = { has_cultural_pillar = heritage_byzantine }
+					}
+				}
+				order_by = diarchy_regent_succession_score_value
+				max = 1
+				save_scope_as = ewrh_wre_recipient
+			}
+		}
+		# Tier 4: drop religion filter, keep culture only
+		if = {
+			limit = { NOT = { exists = scope:ewrh_wre_recipient } }
+			ordered_vassal = {
+				limit = {
+					OR = {
+						culture = culture:greek
+						culture = { has_cultural_pillar = heritage_byzantine }
+					}
+				}
+				order_by = diarchy_regent_succession_score_value
+				max = 1
+				save_scope_as = ewrh_wre_recipient
+			}
 		}
 		if = {
 			limit = { exists = scope:ewrh_wre_recipient }
@@ -189,14 +242,70 @@ ewrh_create_sub_empires_effect = {
 	# --- Grant e_byzantium ---
 	# Skipped if e_byzantium already has a holder (Byzantine restorer — destroy loop
 	# preserved their title, so they remain Eastern Emperor under the hegemony).
+	# Fallback chain: relax filters progressively until a candidate is found.
 	if = {
 		limit = { NOT = { exists = title:e_byzantium.holder } }
-		random_vassal = {
-			weight = {
-				base = 1
-				add = diarchy_regent_succession_score_value
+		# Tier 1: opinion >= 70 + same religion + Greek/Byzantine culture
+		ordered_vassal = {
+			limit = {
+				opinion = { target = root value >= 70 }
+				faith = { religion = root.faith.religion }
+				OR = {
+					culture = culture:greek
+					culture = { has_cultural_pillar = heritage_byzantine }
+				}
 			}
+			order_by = diarchy_regent_succession_score_value
+			max = 1
 			save_scope_as = ewrh_byz_recipient
+		}
+		# Tier 2: relax opinion to >= 40
+		if = {
+			limit = { NOT = { exists = scope:ewrh_byz_recipient } }
+			ordered_vassal = {
+				limit = {
+					opinion = { target = root value >= 40 }
+					faith = { religion = root.faith.religion }
+					OR = {
+						culture = culture:greek
+						culture = { has_cultural_pillar = heritage_byzantine }
+					}
+				}
+				order_by = diarchy_regent_succession_score_value
+				max = 1
+				save_scope_as = ewrh_byz_recipient
+			}
+		}
+		# Tier 3: drop opinion filter, keep religion + culture
+		if = {
+			limit = { NOT = { exists = scope:ewrh_byz_recipient } }
+			ordered_vassal = {
+				limit = {
+					faith = { religion = root.faith.religion }
+					OR = {
+						culture = culture:greek
+						culture = { has_cultural_pillar = heritage_byzantine }
+					}
+				}
+				order_by = diarchy_regent_succession_score_value
+				max = 1
+				save_scope_as = ewrh_byz_recipient
+			}
+		}
+		# Tier 4: drop religion filter, keep culture only
+		if = {
+			limit = { NOT = { exists = scope:ewrh_byz_recipient } }
+			ordered_vassal = {
+				limit = {
+					OR = {
+						culture = culture:greek
+						culture = { has_cultural_pillar = heritage_byzantine }
+					}
+				}
+				order_by = diarchy_regent_succession_score_value
+				max = 1
+				save_scope_as = ewrh_byz_recipient
+			}
 		}
 		if = {
 			limit = { exists = scope:ewrh_byz_recipient }
