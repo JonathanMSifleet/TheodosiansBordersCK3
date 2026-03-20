@@ -6,6 +6,6 @@ tags={
 	"Hegemonies"
 	"Empires"
 }
-name="EastWestRomanHegemony"
+name="Theodosian's Borders"
 supported_version="1.18.4"
 remote_file_id="EastWestRomanHegemony"
