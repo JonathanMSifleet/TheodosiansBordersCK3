@@ -7,5 +7,6 @@ tags={
 	"Empires"
 }
 name="Theodosian's Borders"
+picture="thumbnail.png"
 supported_version="1.18.4"
 remote_file_id="EastWestRomanHegemony"
